@@ -3,7 +3,7 @@
     define('USUARIO_DB','searAdmin');
     define('PASS_DB','sear123');
     define('NOMBRE_DB','searlogbd');
-    error_reporting(0);
+    //error_reporting(0);
     $dir = dirname(__FILE__,1);
     $url = filter_input(INPUT_GET,'args',FILTER_SANITIZE_URL);
     $url = explode ('/',$url);
