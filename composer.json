@@ -1,17 +1,2 @@
 {
-    "name": "cesar/servidor1",
-    "description": "sitio para carga y vista de estados arduino-device",
-    "type": "project",
-    "license": "free",
-    "authors": [
-        {
-            "name": "ces1406",
-            "email": "ces1406@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {},
-    "require-dev": {
-        "heroku/heroku-buildpack-php":"*"
-    }
 }
