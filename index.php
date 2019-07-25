@@ -1,4 +1,36 @@
  <?php
+    // define('HOST_DB','localhost');
+    // define('USUARIO_DB','searAdmin');
+    // define('PASS_DB','sear123');
+    // define('NOMBRE_DB','searlogbd');
+    error_reporting(0);
+    $dir = dirname(__FILE__,1);
+    $url = filter_input(INPUT_GET,'args',FILTER_SANITIZE_URL);
+    $url = explode ('/',$url);
+    $destino = array_slice($url,2);
+    echo $url[0];
+    echo $url[1];
+    echo count($url);
+    if($url[0]=='listar') {
+        //conectarse a la bd
+        // $unMysqli=new mysqli(HOST_DB,USUARIO_DB,PASS_DB,NOMBRE_DB);
+        // if($unMysqli->connect_error){
+        //     die('error('.$unMysqli->connect_errno.'):'.$unMysqli->error);
+        // }else {
+        //     $unMysqli->set_charset("utf8");
+        //     $vecRegistros=null;
+        //     if($unMysqli==false){return null;}
+        //     $sql="SELECT * FROM searlogbd.logDeUso ORDER BY horaRegistro DESC";
+        //     $resultado=$unMysqli->query($sql);
+        
+        //     for ($numFila=$resultado->num_rows-1;$numFila>=0;$numFila--){
+        //         $resultado->data_seek($numFila);
+        //         $vecRegistros[$numFila-1]=$resultado->fetch_assoc();
+        //     }
+        //     $resultado->close();
+        //     mysqli_close($unMysqli);
+        // };
+        // $i=1;
         echo("
         <!DOCTYPE html>
         <html lang='es'>
@@ -16,22 +48,49 @@
             <title>Log o Registro de uso</title>
         </head>
         <body>
-            <nav class='navbar sticky-top navbar-dark bg-dark'> <a class='navbar-brand' href='#'>Log o Registro del uso de dispositivo de iluminaci&oacute;n</a></nav>
-            <table class='table table-dark'> 
-                <thead class='thead-dark'>
-                    <tr> 
-                        <th scope='col'>#</th>
-                        <th scope='col'>Estado</th>
-                        <th scope='col'>Modo</th>
-                        <th scope='col'>Valor R</th>
-                        <th scope='col'>Valor G</th>
-                        <th scope='col'>Valor B</th>
-                        <th scope='col'>Hora seteada</th>
-                        <th scope='col'>Temperatura</th>
-                        <th scope='col'>Hora de registro</th>
-                    </tr>
-                </thead>
-            <table>
+        <nav class='navbar sticky-top navbar-dark bg-dark'> <a class='navbar-brand' href='#'>Log o Registro del uso de dispositivo de iluminaci&oacute;n</a></nav>
+        "); 
+        echo '<table class="table table-dark"> 
+                        <thead class="thead-dark">
+                            <tr> 
+                                <th scope="col">#</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Modo</th>
+                                <th scope="col">Valor R</th>
+                                <th scope="col">Valor G</th>
+                                <th scope="col">Valor B</th>
+                                <th scope="col">Hora seteada</th>
+                                <th scope="col">Temperatura</th>
+                                <th scope="col">Hora de registro</th>
+                            </tr>
+                        </thead>
+                        <tbody>' ;                           
+        // foreach($vecRegistros as $registro){
+        //             echo '<tr><th scope="row">'.$i.'</th><td>'.$registro['estado'].'</td><td>'.$registro['modo'].'</td><td>'.$registro['colorRed']
+        //                 .'</td><td>'.$registro['colorGreen'].'</td><td>'.$registro['colorBlue'].'</td><td>'.$registro['horaDispo'].'</td><td>'
+        //                 .$registro['tempDispo'].'</td><td>'.$registro['horaRegistro'].'</td></tr>';
+        //             $i++;
+        // }; 
+        echo '</tbody></table>';                    
+        echo("  
         </body>
-        </html>  "); 
+        </html>");
+
+    }else if($url[0]=='save'&&(count($url)==8)){
+        //conectarse a la bd
+        // $unMysqli=new mysqli(HOST_DB,USUARIO_DB,PASS_DB,NOMBRE_DB);
+        // if($unMysqli->connect_error){
+        //     die('error('.$unMysqli->connect_errno.'):'.$unMysqli->error);
+        // }else {
+        //     $unMysqli->set_charset("utf8");
+        //     $vecRegistros=null;
+        //     if($unMysqli==false){return null;}
+             $sql="INSERT INTO searlogbd.logDeUso (estado,modo,colorRed,colorGreen,colorBlue,horaDispo,tempDispo,horaRegistro)";
+             $sql.=" VALUES ('".$url[1]."','".$url[2]."',".$url[3].",".$url[4].",".$url[5];
+             $sql .= ",'".$url[6]."',".$url[7].",CURRENT_TIMESTAMP())";
+             echo $sql;
+        //     $resultado=$unMysqli->query($sql);        
+        //     mysqli_close($unMysqli);
+        // };
+    }    
 ?> 
