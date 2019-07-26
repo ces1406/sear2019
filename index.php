@@ -1,8 +1,9 @@
  <?php
-    // define('HOST_DB','localhost');
-    // define('USUARIO_DB','searAdmin');
-    // define('PASS_DB','sear123');
-    // define('NOMBRE_DB','searlogbd');
+    define('HOST_DB','bdbeezvyez0ijiq4lw6r-mysql.services.clever-cloud.com');
+    define('USUARIO_DB','u0nynfxvwfzvtfgs');
+    define('PASS_DB','bNWdfeI83c8RWpN5Rw6N');
+    define('NOMBRE_DB','bdbeezvyez0ijiq4lw6r');
+    define('PORT','3306');
     error_reporting(0);
     $dir = dirname(__FILE__,1);
     $url = filter_input(INPUT_GET,'args',FILTER_SANITIZE_URL);
@@ -13,24 +14,26 @@
     echo count($url);
     if($url[0]=='listar') {
         //conectarse a la bd
-        // $unMysqli=new mysqli(HOST_DB,USUARIO_DB,PASS_DB,NOMBRE_DB);
-        // if($unMysqli->connect_error){
-        //     die('error('.$unMysqli->connect_errno.'):'.$unMysqli->error);
-        // }else {
-        //     $unMysqli->set_charset("utf8");
-        //     $vecRegistros=null;
-        //     if($unMysqli==false){return null;}
-        //     $sql="SELECT * FROM searlogbd.logDeUso ORDER BY horaRegistro DESC";
-        //     $resultado=$unMysqli->query($sql);
+        $unMysqli=new mysqli(HOST_DB,USUARIO_DB,PASS_DB,NOMBRE_DB);
+        if($unMysqli->connect_error){
+            echo("Error al conectar a la db");
+            die('error('.$unMysqli->connect_errno.'):'.$unMysqli->error);
+        }else {
+            echo("exito al conectarse a la db");
+            $unMysqli->set_charset("utf8");
+            $vecRegistros=null;
+            if($unMysqli==false){return null;}
+            $sql="SELECT * FROM ".NOMBRE_DB.".logDeUso ORDER BY horaRegistro DESC";
+            $resultado=$unMysqli->query($sql);
         
-        //     for ($numFila=$resultado->num_rows-1;$numFila>=0;$numFila--){
-        //         $resultado->data_seek($numFila);
-        //         $vecRegistros[$numFila-1]=$resultado->fetch_assoc();
-        //     }
-        //     $resultado->close();
-        //     mysqli_close($unMysqli);
-        // };
-        // $i=1;
+            for ($numFila=$resultado->num_rows-1;$numFila>=0;$numFila--){
+                $resultado->data_seek($numFila);
+                $vecRegistros[$numFila-1]=$resultado->fetch_assoc();
+            }
+            $resultado->close();
+            mysqli_close($unMysqli);
+        };
+        $i=1;
         echo("
         <!DOCTYPE html>
         <html lang='es'>
@@ -65,12 +68,12 @@
                             </tr>
                         </thead>
                         <tbody>' ;                           
-        // foreach($vecRegistros as $registro){
-        //             echo '<tr><th scope="row">'.$i.'</th><td>'.$registro['estado'].'</td><td>'.$registro['modo'].'</td><td>'.$registro['colorRed']
-        //                 .'</td><td>'.$registro['colorGreen'].'</td><td>'.$registro['colorBlue'].'</td><td>'.$registro['horaDispo'].'</td><td>'
-        //                 .$registro['tempDispo'].'</td><td>'.$registro['horaRegistro'].'</td></tr>';
-        //             $i++;
-        // }; 
+        foreach($vecRegistros as $registro){
+                    echo '<tr><th scope="row">'.$i.'</th><td>'.$registro['estado'].'</td><td>'.$registro['modo'].'</td><td>'.$registro['colorRed']
+                        .'</td><td>'.$registro['colorGreen'].'</td><td>'.$registro['colorBlue'].'</td><td>'.$registro['horaDispo'].'</td><td>'
+                        .$registro['tempDispo'].'</td><td>'.$registro['horaRegistro'].'</td></tr>';
+                    $i++;
+        }; 
         echo '</tbody></table>';                    
         echo("  
         </body>
@@ -78,19 +81,19 @@
 
     }else if($url[0]=='save'&&(count($url)==8)){
         //conectarse a la bd
-        // $unMysqli=new mysqli(HOST_DB,USUARIO_DB,PASS_DB,NOMBRE_DB);
-        // if($unMysqli->connect_error){
-        //     die('error('.$unMysqli->connect_errno.'):'.$unMysqli->error);
-        // }else {
-        //     $unMysqli->set_charset("utf8");
-        //     $vecRegistros=null;
-        //     if($unMysqli==false){return null;}
-             $sql="INSERT INTO searlogbd.logDeUso (estado,modo,colorRed,colorGreen,colorBlue,horaDispo,tempDispo,horaRegistro)";
+        $unMysqli=new mysqli(HOST_DB,USUARIO_DB,PASS_DB,NOMBRE_DB);
+        if($unMysqli->connect_error){
+            die('error('.$unMysqli->connect_errno.'):'.$unMysqli->error);
+        }else {
+            $unMysqli->set_charset("utf8");
+            $vecRegistros=null;
+            if($unMysqli==false){return null;}
+             $sql="INSERT INTO ".NOMBRE_DB.".logDeUso (estado,modo,colorRed,colorGreen,colorBlue,horaDispo,tempDispo,horaRegistro)";
              $sql.=" VALUES ('".$url[1]."','".$url[2]."',".$url[3].",".$url[4].",".$url[5];
              $sql .= ",'".$url[6]."',".$url[7].",CURRENT_TIMESTAMP())";
-             echo $sql;
-        //     $resultado=$unMysqli->query($sql);        
-        //     mysqli_close($unMysqli);
-        // };
+             //echo $sql;
+            $resultado=$unMysqli->query($sql);        
+            mysqli_close($unMysqli);
+        };
     }    
 ?> 
